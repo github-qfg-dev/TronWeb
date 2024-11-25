@@ -40,13 +40,22 @@ public class TronWeb3: NSObject {
     public var isGenerateTronWebInstanceSuccess: Bool = false
     var onCompleted: ((Bool, String) -> Void)?
     var showLog: Bool = true
+    var shouldSetup: Bool
     override public init() {
+        self.shouldSetup = false
         super.init()
         let webConfiguration = WKWebViewConfiguration()
         self.webView = WKWebView(frame: .zero, configuration: webConfiguration)
         self.webView.navigationDelegate = self
         self.webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         self.bridge = WKWebViewJavascriptBridge(webView: self.webView, isHookConsole: false)
+    }
+    
+    public convenience init(shouldSetup: Bool) {
+        self.init()
+        if shouldSetup {
+            self.setup(privateKey: "01", node: "https://burned-divine-sheet.tron-mainnet.quiknode.pro/807f210f9b394628252144e2ca13853292ac5cca/")
+        }
     }
 
     deinit {
